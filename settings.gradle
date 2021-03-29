@@ -1,0 +1,3 @@
+rootProject.name='Qojqva'
+include ':library_qojqva'
+include ':demo'
