@@ -433,7 +433,7 @@ object PermissionKit {
                     return null
                 }
             }
-        } while (context != null)
+        } while (context == null)
         return null
     }
 

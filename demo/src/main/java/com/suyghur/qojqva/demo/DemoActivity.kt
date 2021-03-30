@@ -1,6 +1,7 @@
 package com.suyghur.qojqva.demo
 
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -92,6 +93,87 @@ class DemoActivity : Activity(), View.OnClickListener {
 
                     })
                 }
+                1 -> {
+                    Qojqva.with().permission(Permission.RECORD_AUDIO).permission(Permission.Group.CALENDAR).request(this@DemoActivity, object : IPermissionCallback {
+                        override fun onGranted(permissions: ArrayList<String>, all: Boolean) {
+                            toast("获取录音和日历权限成功")
+                        }
+
+                        override fun onDenied(permissions: ArrayList<String>, never: Boolean) {
+                        }
+                    })
+                }
+                2 -> {
+                    Qojqva.with().permission(Permission.Group.LOCATION).request(this@DemoActivity, object : IPermissionCallback {
+                        override fun onGranted(permissions: ArrayList<String>, all: Boolean) {
+                            toast("获取定位权限成功")
+                        }
+
+                        override fun onDenied(permissions: ArrayList<String>, never: Boolean) {
+                        }
+                    })
+                }
+                3 -> {
+                    val delayMillis = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                        toast("当前版本不是 Android 11 以上，会自动变更为旧版的请求方式")
+                        2000L
+                    } else {
+                        0L
+                    }
+                    postDelayed({
+                        //不适配 Android 11 可以这样写permission(Permission.Group.STORAGE)
+                        //适配 Android 11 需要这样写，这里无需再写 Permission.Group.STORAGE
+                        Qojqva.with().permission(Permission.MANAGE_EXTERNAL_STORAGE).request(this@DemoActivity, object : IPermissionCallback {
+                            override fun onGranted(permissions: ArrayList<String>, all: Boolean) {
+                                toast("获取存储权限成功")
+                            }
+
+                            override fun onDenied(permissions: ArrayList<String>, never: Boolean) {
+                            }
+                        })
+                    }, delayMillis)
+                }
+                4 -> {
+                    Qojqva.with().permission(Permission.REQUEST_INSTALL_PACKAGES).request(this@DemoActivity, object : IPermissionCallback {
+                        override fun onGranted(permissions: ArrayList<String>, all: Boolean) {
+                            toast("获取安装包权限成功")
+                        }
+
+                        override fun onDenied(permissions: ArrayList<String>, never: Boolean) {
+                        }
+                    })
+                }
+                5 -> {
+                    Qojqva.with().permission(Permission.SYSTEM_ALERT_WINDOW).request(this@DemoActivity, object : IPermissionCallback {
+                        override fun onGranted(permissions: ArrayList<String>, all: Boolean) {
+                            toast("获取悬浮窗权限成功")
+                        }
+
+                        override fun onDenied(permissions: ArrayList<String>, never: Boolean) {
+                        }
+                    })
+                }
+                6 -> {
+                    Qojqva.with().permission(Permission.NOTIFICATION_SERVICE).request(this@DemoActivity, object : IPermissionCallback {
+                        override fun onGranted(permissions: ArrayList<String>, all: Boolean) {
+                            toast("获取通知栏权限成功")
+                        }
+
+                        override fun onDenied(permissions: ArrayList<String>, never: Boolean) {
+                        }
+                    })
+                }
+                7 -> {
+                    Qojqva.with().permission(Permission.WRITE_SETTINGS).request(this@DemoActivity, object : IPermissionCallback {
+                        override fun onGranted(permissions: ArrayList<String>, all: Boolean) {
+                            toast("获取系统设置权限成功")
+                        }
+
+                        override fun onDenied(permissions: ArrayList<String>, never: Boolean) {
+                        }
+                    })
+                }
+                8 -> Qojqva.startPermissionActivity(this@DemoActivity)
             }
         }
     }
@@ -99,6 +181,5 @@ class DemoActivity : Activity(), View.OnClickListener {
     private fun toast(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
-
 
 }

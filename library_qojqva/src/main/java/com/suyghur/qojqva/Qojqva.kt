@@ -8,6 +8,7 @@ import com.suyghur.qojqva.impl.QojqvaProxyActivity
 import com.suyghur.qojqva.impl.PermissionSettingPage
 import com.suyghur.qojqva.inernal.IPermissionCallback
 import com.suyghur.qojqva.inernal.IPermissionInterceptor
+import com.suyghur.qojqva.toolkit.LogKit
 import com.suyghur.qojqva.toolkit.PermissionKit
 
 /**
@@ -125,7 +126,7 @@ class Qojqva private constructor() {
         }
 
         fun startPermissionActivity(context: Context) {
-            startPermissionActivity(context, arrayListOf())
+            startPermissionActivity(context, arrayListOf<String>())
         }
 
         fun startPermissionActivity(context: Context, permission: String) {
