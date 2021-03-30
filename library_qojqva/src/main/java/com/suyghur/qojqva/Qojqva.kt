@@ -73,6 +73,7 @@ class Qojqva private constructor() {
          */
         var scopedStorage = false
 
+        @JvmStatic
         fun with(): Qojqva {
             return Qojqva()
         }
@@ -80,14 +81,17 @@ class Qojqva private constructor() {
         /**
          * 判断一个或多个权限是否全部授予了
          */
+        @JvmStatic
         fun isGranted(context: Context, permission: String): Boolean {
             return PermissionKit.isGrantedPermission(context, permission)
         }
 
+        @JvmStatic
         fun isGranted(context: Context, permissions: ArrayList<String>): Boolean {
             return PermissionKit.isGrantedPermissions(context, permissions)
         }
 
+        @JvmStatic
         fun isGranted(context: Context, permissions: Array<String>): Boolean {
             return isGranted(context, PermissionKit.asArrayList(*permissions))
         }
@@ -95,10 +99,12 @@ class Qojqva private constructor() {
         /**
          * 获取没有授予的权限
          */
+        @JvmStatic
         fun getDenied(context: Context, permissions: ArrayList<String>): ArrayList<String> {
             return PermissionKit.getDeniedPermissions(context, permissions)
         }
 
+        @JvmStatic
         fun getDenied(context: Context, permissions: Array<String>): ArrayList<String> {
             return getDenied(context, PermissionKit.asArrayList(*permissions))
         }
@@ -106,6 +112,7 @@ class Qojqva private constructor() {
         /**
          * 判断某个权限是否是特殊权限
          */
+        @JvmStatic
         fun isSpecial(permission: String): Boolean {
             return PermissionKit.isSpecialPermission(permission)
         }
@@ -113,26 +120,32 @@ class Qojqva private constructor() {
         /**
          * 判断一个或多个权限是否被永久拒绝了（注意不能在请求权限之前调用，应该在 [IPermissionCallback.onDenied] 方法中调用）
          */
+        @JvmStatic
         fun isPermissionDenied(activity: Activity, permission: String): Boolean {
             return PermissionKit.isPermissionPermanentDenied(activity, permission)
         }
 
+        @JvmStatic
         fun isPermissionDenied(activity: Activity, permissions: ArrayList<String>): Boolean {
             return PermissionKit.isPermissionPermanentDenied(activity, permissions)
         }
 
+        @JvmStatic
         fun isPermissionDenied(activity: Activity, permissions: Array<String>): Boolean {
             return isPermissionDenied(activity, PermissionKit.asArrayList(*permissions))
         }
 
+        @JvmStatic
         fun startPermissionActivity(context: Context) {
             startPermissionActivity(context, arrayListOf<String>())
         }
 
+        @JvmStatic
         fun startPermissionActivity(context: Context, permission: String) {
             startPermissionActivity(context, PermissionKit.asArrayList(permission))
         }
 
+        @JvmStatic
         fun startPermissionActivity(context: Context, permissions: ArrayList<String>) {
             val activity = PermissionKit.findFragmentActivity(context)
             if (activity != null) {
@@ -142,35 +155,43 @@ class Qojqva private constructor() {
             context.startActivity(PermissionSettingPage.getSmartPermissionIntent(context, permissions).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
 
+        @JvmStatic
         fun startPermissionActivity(context: Context, permissions: Array<String>) {
             startPermissionActivity(context, PermissionKit.asArrayList(*permissions))
         }
 
+        @JvmStatic
         fun startPermissionActivity(activity: Activity, permission: String) {
             startPermissionActivity(activity, PermissionKit.asArrayList(permission))
         }
 
+        @JvmStatic
         fun startPermissionActivity(activity: Activity, permissions: Array<String>) {
             startPermissionActivity(activity, PermissionKit.asArrayList(*permissions))
         }
 
+        @JvmStatic
         fun startPermissionActivity(activity: Activity, permissions: ArrayList<String>) {
             activity.startActivityForResult(PermissionSettingPage.getSmartPermissionIntent(activity, permissions), REQUEST_CODE)
         }
 
+        @JvmStatic
         fun startPermissionActivity(fragment: Fragment, permissions: ArrayList<String>) {
             val activity = fragment.requireActivity()
             fragment.startActivityForResult(PermissionSettingPage.getSmartPermissionIntent(activity, permissions), REQUEST_CODE)
         }
 
+        @JvmStatic
         fun startPermissionActivity(fragment: Fragment) {
             startPermissionActivity(fragment, arrayListOf())
         }
 
+        @JvmStatic
         fun startPermissionActivity(fragment: Fragment, permissions: String) {
             startPermissionActivity(fragment, PermissionKit.asArrayList(permissions))
         }
 
+        @JvmStatic
         fun startPermissionActivity(fragment: Fragment, permissions: Array<String>) {
             startPermissionActivity(fragment, PermissionKit.asArrayList(*permissions))
         }
