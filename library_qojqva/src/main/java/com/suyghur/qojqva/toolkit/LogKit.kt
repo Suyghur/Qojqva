@@ -9,7 +9,7 @@ import java.lang.reflect.Array
  */
 object LogKit {
 
-    private const val TAG = "qojqva"
+    private const val TAG = "qojqva_sdk"
 
     fun d(any: Any?) {
         d(TAG, any)

@@ -2,4 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.suyghur.qojqva">
 
+    <application android:allowBackup="true">
+        <activity
+            android:name="com.suyghur.qojqva.impl.QojqvaProxyActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:imeOptions="flagNoFullscreen|flagNoExtractUi"
+            android:launchMode="singleTask"
+            android:theme="@style/QojqvaTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden|stateVisible" />
+    </application>
 </manifest>

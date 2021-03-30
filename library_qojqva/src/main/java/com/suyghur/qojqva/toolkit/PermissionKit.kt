@@ -15,7 +15,7 @@ import com.suyghur.qojqva.entity.Permission
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.acos
+import kotlin.math.pow
 
 /**
  * @author #Suyghur.
@@ -71,17 +71,16 @@ object PermissionKit {
             return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
         }
 
-
     /**
      * 返回应用程序在清单文件中注册的权限
      */
-    fun getManifestPermissions(context: Context): MutableList<String> {
+    fun getManifestPermissions(context: Context): ArrayList<String> {
         return try {
             val requestedPermissions = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_PERMISSIONS).requestedPermissions
             asArrayList(*requestedPermissions)
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
-            mutableListOf()
+            arrayListOf()
         }
     }
 
@@ -164,7 +163,7 @@ object PermissionKit {
     /**
      * 判断某个权限集合是否包含特殊权限
      */
-    fun containsSpecialPermission(permissions: MutableList<String>): Boolean {
+    fun containsSpecialPermission(permissions: ArrayList<String>): Boolean {
         if (permissions.isEmpty()) {
             return false
         }
@@ -190,7 +189,7 @@ object PermissionKit {
     /**
      * 判断某些权限是否全部被授予
      */
-    fun isGrantedPermissions(context: Context, permissions: MutableList<String>): Boolean {
+    fun isGrantedPermissions(context: Context, permissions: ArrayList<String>): Boolean {
         //如果是安卓 6.0 以下版本就直接返回 true
         if (!isAndroid6) {
             return true
@@ -207,8 +206,8 @@ object PermissionKit {
     /**
      * 获取没有授予的权限
      */
-    fun getDeniedPermissions(context: Context, permissions: MutableList<String>): MutableList<String> {
-        val deniedPermissions = mutableListOf<String>()
+    fun getDeniedPermissions(context: Context, permissions: ArrayList<String>): ArrayList<String> {
+        val deniedPermissions = arrayListOf<String>()
 
         //如果是安卓 6.0 以下版本就默认授予
         if (!isAndroid6) {
@@ -222,6 +221,24 @@ object PermissionKit {
         }
         return deniedPermissions
     }
+
+    /**
+     * 获取没有授予的权限
+     *
+     * @param permissions   需要请求的权限组
+     * @param grantResults  允许结果组
+     */
+    fun getDeniedPermissions(permissions: Array<String>, grantResults: IntArray): ArrayList<String> {
+        val deniedPermissions = arrayListOf<String>()
+        for (i in grantResults.indices) {
+            //把没有授予过的权限加入到集合中
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                deniedPermissions.add(permissions[i])
+            }
+        }
+        return deniedPermissions
+    }
+
 
     /**
      * 判断某个权限是否授予
@@ -279,10 +296,12 @@ object PermissionKit {
                 return true
             }
 
-            if (Permission.READ_PHONE_NUMBERS == permission){
-
+            if (Permission.READ_PHONE_NUMBERS == permission) {
+                return context.checkSelfPermission(Permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED
             }
         }
+
+        return context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
     }
 
     /**
@@ -291,7 +310,7 @@ object PermissionKit {
      * 未授权返回[PackageManager.PERMISSION_DENIED]
      */
     fun getPermissionStatus(context: Context, permission: String): Int {
-        return if (PermissionKit.isGrantedPermission(context, permission)) PackageManager.PERMISSION_GRANTED else PackageManager.PERMISSION_DENIED
+        return if (isGrantedPermission(context, permission)) PackageManager.PERMISSION_GRANTED else PackageManager.PERMISSION_DENIED
     }
 
     /**
@@ -300,7 +319,7 @@ object PermissionKit {
      * @param activity  Activity对象
      * @param permissions   请求的权限
      */
-    fun isPermissionPermanentDenied(activity: Activity, permissions: MutableList<String>): Boolean {
+    fun isPermissionPermanentDenied(activity: Activity, permissions: ArrayList<String>): Boolean {
         for (permission in permissions) {
             if (isPermissionPermanentDenied(activity, permission)) {
                 return true
@@ -356,30 +375,13 @@ object PermissionKit {
     }
 
     /**
-     * 获取没有授予的权限
-     *
-     * @param permissions   需要请求的权限组
-     * @param grantResults  允许结果组
-     */
-    fun getDeniedPermissions(permissions: Array<String>, grantResults: IntArray): MutableList<String> {
-        val deniedPermissions = mutableListOf<String>()
-        for (i in grantResults.indices) {
-            //把没有授予过的权限加入到集合中
-            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                deniedPermissions.add(permissions[i])
-            }
-        }
-        return deniedPermissions
-    }
-
-    /**
      * 获取已授予的权限
      *
      * @param permissions   需要请求的权限组
      * @param grantResults  允许结果组
      */
-    fun getGrantedPermissions(permissions: Array<String>, grantResults: IntArray): MutableList<String> {
-        val grantedPermissions = mutableListOf<String>()
+    fun getGrantedPermissions(permissions: Array<String>, grantResults: IntArray): ArrayList<String> {
+        val grantedPermissions = arrayListOf<String>()
         for (i in grantResults.indices) {
             //把授予过的权限加入到集合中
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
@@ -395,9 +397,9 @@ object PermissionKit {
      * 第一是返回的类型不是 java.util.ArrayList 而是 java.util.Arrays.ArrayList
      * 第二是返回的 ArrayList 对象是只读的，也就是不能添加任何元素，否则会抛异常
      */
-    fun <T> asArrayList(vararg array: T): MutableList<T> {
+    fun <T> asArrayList(vararg array: T): ArrayList<T> {
         if (array.isEmpty()) {
-            return mutableListOf()
+            return arrayListOf()
         }
         val list = ArrayList<T>(array.size)
         for (t in array) {
@@ -412,27 +414,26 @@ object PermissionKit {
     fun getRandomRequestCode(): Int {
         // 新版本的 Support 库限制请求码必须小于 65536
         // 旧版本的 Support 库限制请求码必须小于 256
-        return Random().nextInt(Math.pow(2.0, 8.0).toInt())
+        return Random().nextInt(2.0.pow(8.0).toInt())
     }
 
     /**
      * 寻找上下文中的 Activity 对象
      */
     fun findFragmentActivity(context: Context?): FragmentActivity? {
-        var ctx: Context? = null
         do {
-            ctx = when (ctx) {
+            when (context) {
                 is FragmentActivity -> {
-                    return ctx
+                    return context
                 }
                 is ContextWrapper -> {
-                    ctx.baseContext
+                    context.baseContext
                 }
                 else -> {
                     return null
                 }
             }
-        } while (ctx != null)
+        } while (context != null)
         return null
     }
 

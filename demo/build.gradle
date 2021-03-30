@@ -67,4 +67,6 @@ android {
 }
 
 dependencies {
+    api project(':library_qojqva')
+    implementation 'androidx.appcompat:appcompat:1.2.0'
 }
