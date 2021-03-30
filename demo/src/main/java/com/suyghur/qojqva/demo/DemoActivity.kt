@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import com.suyghur.qojqva.Qojqva
 import com.suyghur.qojqva.entity.Permission
-import com.suyghur.qojqva.inernal.IPermissionCallback
+import com.suyghur.qojqva.internal.IPermissionCallback
 import com.suyghur.qojqva.toolkit.LogKit
 
 /**

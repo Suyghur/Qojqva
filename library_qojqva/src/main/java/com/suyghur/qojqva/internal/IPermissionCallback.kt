@@ -1,4 +1,4 @@
-package com.suyghur.qojqva.inernal
+package com.suyghur.qojqva.internal
 
 /**
  * @author #Suyghur.

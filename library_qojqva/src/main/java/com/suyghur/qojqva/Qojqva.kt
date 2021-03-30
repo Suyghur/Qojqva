@@ -6,9 +6,8 @@ import android.content.Intent
 import androidx.fragment.app.Fragment
 import com.suyghur.qojqva.impl.QojqvaProxyActivity
 import com.suyghur.qojqva.impl.PermissionSettingPage
-import com.suyghur.qojqva.inernal.IPermissionCallback
-import com.suyghur.qojqva.inernal.IPermissionInterceptor
-import com.suyghur.qojqva.toolkit.LogKit
+import com.suyghur.qojqva.internal.IPermissionCallback
+import com.suyghur.qojqva.internal.IPermissionInterceptor
 import com.suyghur.qojqva.toolkit.PermissionKit
 
 /**

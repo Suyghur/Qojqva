@@ -7,8 +7,8 @@ import androidx.fragment.app.FragmentActivity
 import com.suyghur.qojqva.entity.Permission
 import com.suyghur.qojqva.impl.QojqvaFragment
 import com.suyghur.qojqva.impl.QojqvaProxyActivity
-import com.suyghur.qojqva.inernal.IPermissionCallback
-import com.suyghur.qojqva.inernal.IPermissionInterceptor
+import com.suyghur.qojqva.internal.IPermissionCallback
+import com.suyghur.qojqva.internal.IPermissionInterceptor
 
 /**
  * @author #Suyghur.

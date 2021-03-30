@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.suyghur.qojqva.Qojqva
 import com.suyghur.qojqva.entity.Permission
-import com.suyghur.qojqva.inernal.IPermissionCallback
+import com.suyghur.qojqva.internal.IPermissionCallback
 import com.suyghur.qojqva.toolkit.PermissionKit
 import java.util.*
 

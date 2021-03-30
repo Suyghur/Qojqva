@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.suyghur.qojqva.Qojqva
-import com.suyghur.qojqva.inernal.IPermissionCallback
+import com.suyghur.qojqva.internal.IPermissionCallback
 import com.suyghur.qojqva.toolkit.LogKit
 import com.suyghur.qojqva.toolkit.PermissionChecker
 import com.suyghur.qojqva.toolkit.PermissionKit
