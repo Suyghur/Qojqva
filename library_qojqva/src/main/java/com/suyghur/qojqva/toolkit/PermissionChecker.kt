@@ -99,7 +99,7 @@ object PermissionChecker {
             return
         }
         val cookie = PermissionKit.findApkPathCookie(context)
-        if (cookie == -1) {
+        if (cookie == 0) {
             return
         }
         try {

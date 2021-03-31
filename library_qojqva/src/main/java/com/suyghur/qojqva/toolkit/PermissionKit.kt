@@ -443,7 +443,7 @@ object PermissionKit {
     fun findApkPathCookie(context: Context): Int {
         val assets = context.assets
         val path = context.applicationInfo.sourceDir
-        var cookie = -1
+        var cookie = 0
         try {
             try {
                 val method = assets.javaClass.getDeclaredMethod("addOverlayPath", String::class.java)

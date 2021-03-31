@@ -28,26 +28,26 @@ class QojqvaProxyActivity : AppCompatActivity() {
         doRequestPermissions()
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        LogKit.d("${QojqvaProxyActivity::class.java.simpleName}.onActivityResult")
-        //原来这个finish是在BasePermissionInterceptor中用户点击"前往授权后调用"
-        //跳转设置页面后如果（用户按下Home -> 再返回回到设置页 -> 按下返回键），这个流程中外部Activity（不是ProxyActivity）会回调onDestroy
-        //所以这里要根据requestCode进行判断然后finish调ProxyActivity
-        if (requestCode == Qojqva.REQUEST_CODE) {
-            finish()
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()
         mPermissions?.clear()
         mPermissions = null
         mCallback = null
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //原来这个finish是在BasePermissionInterceptor中用户点击"前往授权后调用"
+        //跳转设置页面后如果（用户按下Home -> 再返回回到设置页 -> 按下返回键），这个流程中外部Activity（不是ProxyActivity）会回调onDestroy
+        //所以这里要根据requestCode进行判断然后finish调ProxyActivity
+        if (requestCode == Qojqva.REQUEST_CODE && !isFinishing) {
+            finish()
+        }
     }
 
     private fun doRequestPermissions() {
@@ -121,7 +121,11 @@ class QojqvaProxyActivity : AppCompatActivity() {
             mCallback = callback
             context.startActivity(Intent(context, QojqvaProxyActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
+
+        fun finish(context: Context) {
+            if (context is QojqvaProxyActivity) {
+                context.finish()
+            }
+        }
     }
-
-
 }

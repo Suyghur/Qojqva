@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentActivity
 import com.suyghur.qojqva.Qojqva
 import com.suyghur.qojqva.entity.Permission
 import com.suyghur.qojqva.internal.IPermissionCallback
+import com.suyghur.qojqva.toolkit.LogKit
 import com.suyghur.qojqva.toolkit.PermissionKit
 import java.util.*
 
@@ -85,6 +86,7 @@ class QojqvaFragment : Fragment(), Runnable {
         for (i in permissions.indices) {
             val permission = permissions[i]
             if (PermissionKit.isSpecialPermission(permission)) {
+                LogKit.d("这个权限是特殊权限，重新开始检查")
                 //如果这个权限是特殊权限，那么就重新开始检查
                 grantResults[i] = PermissionKit.getPermissionStatus(activity, permission)
                 continue
@@ -92,6 +94,7 @@ class QojqvaFragment : Fragment(), Runnable {
 
             //重新检查11.0后台定位权限
             if (PermissionKit.isAndroid11 && Permission.ACCESS_BACKGROUND_LOCATION == permission) {
+                LogKit.d("重新检查11.0后台定位权限")
                 //这个权限是后台定位权限并且当前手机版本是 Android 11 及以上，那么就需要重新进行检查
                 //因为只要申请这个后台定位权限，grantResults 数组总对这个权限申请的结果返回 -1（拒绝）
                 grantResults[i] = PermissionKit.getPermissionStatus(activity, permission)
@@ -101,6 +104,7 @@ class QojqvaFragment : Fragment(), Runnable {
             //重新检查10.0的三个新权限
             if (!PermissionKit.isAndroid10 && (Permission.ACCESS_BACKGROUND_LOCATION == permission
                             || Permission.ACTIVITY_RECOGNITION == permission) || Permission.ACCESS_MEDIA_LOCATION == permission) {
+                LogKit.d("重新检查10.0的三个新权限")
                 //如果当前版本不符合最低要求，那么就重新进行检查
                 grantResults[i] = PermissionKit.getPermissionStatus(activity, permission)
                 continue
@@ -109,6 +113,7 @@ class QojqvaFragment : Fragment(), Runnable {
             //重新检查9.0的新权限
             if (!PermissionKit.isAndroid9 && Permission.ACCEPT_HANDOVER == permission) {
                 //如果当前版本不符合最低要求，那么就重新进行检查
+                LogKit.d("重新检查9.0的新权限")
                 grantResults[i] = PermissionKit.getPermissionStatus(activity, permission)
                 continue
             }
@@ -116,6 +121,7 @@ class QojqvaFragment : Fragment(), Runnable {
             //重新检查8.0的两个新权限
             if (!PermissionKit.isAndroid8 && (Permission.ANSWER_PHONE_CALLS == permission || Permission.READ_PHONE_NUMBERS == permission)) {
                 //如果当前版本不符合最低要求，那么就重新进行检查
+                LogKit.d("重新检查8.0的两个新权限")
                 grantResults[i] = PermissionKit.getPermissionStatus(activity, permission)
             }
         }
@@ -135,7 +141,8 @@ class QojqvaFragment : Fragment(), Runnable {
 
         //获取被拒绝的权限
         val deniedPermissions = PermissionKit.getDeniedPermissions(permissions, grantResults)
-        //代办申请的权限有不同意的，如果有个权限被永久拒绝就返回true，让用户跳转到设置界面开启
+        //申请的权限有不同意的，如果有个权限被永久拒绝就返回true，让用户跳转到设置界面开启
+        LogKit.d("申请的权限有不同意的，如果有个权限被永久拒绝就返回true，让用户跳转到设置界面开启")
         Qojqva.interceptor.deniedPermissions(activity, deniedPermissions, PermissionKit.isPermissionPermanentDenied(activity, deniedPermissions), tmpCallback)
 
         if (grantedPermissions.isNotEmpty()) {
@@ -274,7 +281,7 @@ class QojqvaFragment : Fragment(), Runnable {
                 }
                 //如果申请的权限里面只包含定位相关权限，那么就直接返回失败
                 if (permissions.size == allPermissions.size - 1) {
-                    val grantResults = intArrayOf(allPermissions.size)
+                    val grantResults = IntArray(allPermissions.size) { 0 }
                     Arrays.fill(grantResults, PackageManager.PERMISSION_DENIED)
                     onRequestPermissionsResult(arguments.getInt(REQUEST_CODE), allPermissions.toTypedArray(), grantResults)
                     return
