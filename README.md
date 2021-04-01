@@ -45,8 +45,7 @@ class DemoActivity : Activity(), View.OnClickListener {
 ### 申请权限
 
 ```kotlin
-Qojqva.with()
-				.permission(Permission.RECORD_AUDIO)
+Qojqva.with().permission(Permission.RECORD_AUDIO)
 				.permission(Permission.Group.CALENDAR)
 				.request(this@DemoActivity, object : IPermissionCallback {
 					override fun onGranted(permissions: ArrayList<String>, all: Boolean) {
