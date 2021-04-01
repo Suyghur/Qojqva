@@ -45,17 +45,18 @@ class DemoActivity : Activity(), View.OnClickListener {
 ### 申请权限
 
 ```kotlin
-Qojqva.with().permission(Permission.RECORD_AUDIO)
-				.permission(Permission.Group.CALENDAR)
-				.request(this@DemoActivity, object : IPermissionCallback {
-					override fun onGranted(permissions: ArrayList<String>, all: Boolean) {
-						//permissions表示同意的权限
-						//all表示申请的权限是否全部被授权
+Qojqva.with()
+	.permission(Permission.RECORD_AUDIO)
+	.permission(Permission.Group.CALENDAR)
+	.request(this@DemoActivity, object : IPermissionCallback {
+		override fun onGranted(permissions: ArrayList<String>, all: Boolean) {
+			//permissions表示同意的权限
+			//all表示申请的权限是否全部被授权
           }
-          override fun onDenied(permissions: ArrayList<String>, never: Boolean) {
-						//permissions表示拒绝的权限
-						//never表示申请的权限用户是否点击了不再询问
-						//此时Qojqva会弹窗引导用户跳转到设置页面
+          	override fun onDenied(permissions: ArrayList<String>, never: Boolean) {
+			//permissions表示拒绝的权限
+			//never表示申请的权限用户是否点击了不再询问
+			//此时Qojqva会弹窗引导用户跳转到设置页面
           }
         })
 ```
