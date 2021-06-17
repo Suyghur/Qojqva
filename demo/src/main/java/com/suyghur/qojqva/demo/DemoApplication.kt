@@ -2,7 +2,7 @@ package com.suyghur.qojqva.demo
 
 import android.app.Application
 import android.content.Context
-import com.suyghur.qojqva.Qojqva
+import com.qojqva.Qojqva
 
 /**
  * @author #Suyghur.

@@ -1,4 +1,4 @@
-package com.suyghur.qojqva.entity
+package com.qojqva.entity
 
 /**
  * @author #Suyghur.

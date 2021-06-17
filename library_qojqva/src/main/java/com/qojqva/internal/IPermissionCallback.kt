@@ -1,4 +1,4 @@
-package com.suyghur.qojqva.internal
+package com.qojqva.internal
 
 /**
  * @author #Suyghur.
@@ -21,4 +21,9 @@ interface IPermissionCallback {
      * @param never         是否有某个权限被永久拒绝了
      */
     fun onDenied(permissions: ArrayList<String>, never: Boolean)
+
+    /**
+     * 代理Activity是否结束
+     */
+    fun onProxyFinish()
 }

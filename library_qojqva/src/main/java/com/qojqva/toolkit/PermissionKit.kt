@@ -1,4 +1,4 @@
-package com.suyghur.qojqva.toolkit
+package com.qojqva.toolkit
 
 import android.app.Activity
 import android.app.AppOpsManager
@@ -9,9 +9,9 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
-import androidx.fragment.app.FragmentActivity
-import com.suyghur.qojqva.Qojqva
-import com.suyghur.qojqva.entity.Permission
+import android.support.v4.app.FragmentActivity
+import com.qojqva.Qojqva
+import com.qojqva.entity.Permission
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 import kotlin.collections.ArrayList

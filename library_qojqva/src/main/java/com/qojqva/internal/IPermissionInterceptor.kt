@@ -1,6 +1,6 @@
-package com.suyghur.qojqva.internal
+package com.qojqva.internal
 
-import androidx.fragment.app.FragmentActivity
+import android.support.v4.app.FragmentActivity
 
 
 /**

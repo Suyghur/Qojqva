@@ -1,4 +1,4 @@
-package com.suyghur.qojqva.impl
+package com.qojqva.impl
 
 import android.content.Context
 import android.content.Intent
@@ -6,14 +6,15 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.util.SparseBooleanArray
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import com.suyghur.qojqva.Qojqva
-import com.suyghur.qojqva.entity.Permission
-import com.suyghur.qojqva.internal.IPermissionCallback
-import com.suyghur.qojqva.toolkit.LogKit
-import com.suyghur.qojqva.toolkit.PermissionKit
+import com.qojqva.Qojqva
+
+import com.qojqva.entity.Permission
+import com.qojqva.internal.IPermissionCallback
+import com.qojqva.toolkit.LogKit
+import com.qojqva.toolkit.PermissionKit
 import java.util.*
 
 /**
@@ -29,7 +30,6 @@ class QojqvaFragment : Fragment(), Runnable {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val activity = requireActivity()
         //如果当前没有锁定屏幕方向就获取当前屏幕方向并进行锁定
         mScreenOrientation = activity.requestedOrientation
         if (mScreenOrientation != ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED) {
@@ -68,7 +68,6 @@ class QojqvaFragment : Fragment(), Runnable {
 
     override fun onDetach() {
         super.onDetach()
-        val activity = requireActivity()
         if (mScreenOrientation == ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED) {
             return
         }
@@ -77,8 +76,6 @@ class QojqvaFragment : Fragment(), Runnable {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        val arguments = requireArguments()
-        val activity = requireActivity()
         if (callback == null || requestCode != arguments.getInt(REQUEST_CODE)) {
             return
         }
@@ -152,8 +149,6 @@ class QojqvaFragment : Fragment(), Runnable {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val arguments = requireArguments()
-        val activity = requireActivity()
         if (requestCode != arguments.getInt(REQUEST_CODE) || mDangerousRequest) {
             return
         }
@@ -188,8 +183,6 @@ class QojqvaFragment : Fragment(), Runnable {
     }
 
     private fun requestSpecialPermission() {
-        val arguments = requireArguments()
-        val activity = requireActivity()
         val permissions = arguments.getStringArrayList(REQUEST_PERMISSIONS)
         if (permissions.isNullOrEmpty()) {
             //如果空则直接返回
@@ -203,32 +196,32 @@ class QojqvaFragment : Fragment(), Runnable {
                 //当前必须是 Android 11 及以上版本，因为 hasStoragePermission 在旧版本上是拿旧权限做的判断，所以这里需要多判断一次版本
                 if (PermissionKit.isAndroid11) {
                     //跳转到存储权限设置界面
-                    startActivityForResult(PermissionSettingPage.getStoragePermissionIntent(activity), requireArguments().getInt(REQUEST_CODE))
+                    startActivityForResult(PermissionSettingPage.getStoragePermissionIntent(activity), arguments.getInt(REQUEST_CODE))
                     requestSpecialPermission = true
                 }
             }
 
             if (permissions.contains(Permission.REQUEST_INSTALL_PACKAGES) && !PermissionKit.isGrantedInstallPermission(activity)) {
                 //调整到安装权限设置界面
-                startActivityForResult(PermissionSettingPage.getInstallPermissionIntent(activity), requireArguments().getInt(REQUEST_CODE))
+                startActivityForResult(PermissionSettingPage.getInstallPermissionIntent(activity), arguments.getInt(REQUEST_CODE))
                 requestSpecialPermission = true
             }
 
             if (permissions.contains(Permission.SYSTEM_ALERT_WINDOW) && !PermissionKit.isGrantedWindowPermission(activity)) {
                 //跳转到悬浮窗设置界面
-                startActivityForResult(PermissionSettingPage.getWindowPermissionIntent(activity), requireArguments().getInt(REQUEST_CODE))
+                startActivityForResult(PermissionSettingPage.getWindowPermissionIntent(activity), arguments.getInt(REQUEST_CODE))
                 requestSpecialPermission = true
             }
 
             if (permissions.contains(Permission.NOTIFICATION_SERVICE) && !PermissionKit.isGrantedNotifyPermission(activity)) {
                 // 跳转到通知栏权限设置页面
-                startActivityForResult(PermissionSettingPage.getNotifyPermissionIntent(activity), requireArguments().getInt(REQUEST_CODE))
+                startActivityForResult(PermissionSettingPage.getNotifyPermissionIntent(activity), arguments.getInt(REQUEST_CODE))
                 requestSpecialPermission = true
             }
 
             if (permissions.contains(Permission.WRITE_SETTINGS) && !PermissionKit.isGrantedSettingPermission(activity)) {
                 // 跳转到系统设置权限设置页面
-                startActivityForResult(PermissionSettingPage.getSettingPermissionIntent(activity), requireArguments().getInt(REQUEST_CODE))
+                startActivityForResult(PermissionSettingPage.getSettingPermissionIntent(activity), arguments.getInt(REQUEST_CODE))
                 requestSpecialPermission = true
             }
         }
@@ -242,8 +235,6 @@ class QojqvaFragment : Fragment(), Runnable {
      * 申请危险权限
      */
     private fun requestDangerousPermission() {
-        val arguments = requireArguments()
-        val activity = requireActivity()
         val allPermissions = arguments.getStringArrayList(REQUEST_PERMISSIONS)
         if (allPermissions.isNullOrEmpty()) {
             //如果空则直接返回
@@ -262,7 +253,7 @@ class QojqvaFragment : Fragment(), Runnable {
 
         //如果不需要申请前台定位权限就直接申请危险权限
         if (locationPermissions.isNullOrEmpty()) {
-            requestPermissions(allPermissions.toArray(arrayOfNulls(allPermissions.size - 1)), requireArguments().getInt(REQUEST_CODE))
+            requestPermissions(allPermissions.toArray(arrayOfNulls(allPermissions.size - 1)), arguments.getInt(REQUEST_CODE))
             return
         }
 
@@ -288,6 +279,9 @@ class QojqvaFragment : Fragment(), Runnable {
                 }
                 //如果还有其他类型的权限组就继续申请
                 requestPermissions(allPermissions.toArray(arrayOfNulls(allPermissions.size - 1)), arguments.getInt(REQUEST_CODE))
+            }
+
+            override fun onProxyFinish() {
             }
         })
     }

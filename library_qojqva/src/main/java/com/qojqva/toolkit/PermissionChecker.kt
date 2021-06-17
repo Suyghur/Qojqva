@@ -1,12 +1,12 @@
-package com.suyghur.qojqva.toolkit
+package com.qojqva.toolkit
 
 import android.app.Activity
 import android.content.Context
 import android.content.res.XmlResourceParser
 import android.os.Build
-import androidx.fragment.app.FragmentActivity
-import com.suyghur.qojqva.entity.Permission
-import com.suyghur.qojqva.exception.ManifestRegisterException
+import android.support.v4.app.FragmentActivity
+import com.qojqva.entity.Permission
+import com.qojqva.exception.ManifestRegisterException
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 
@@ -119,7 +119,7 @@ object PermissionChecker {
                         check(!(targetSdkVersion >= Build.VERSION_CODES.Q && !requestLegacyExternalStorage && (requestPermissions.contains(Permission.MANAGE_EXTERNAL_STORAGE) || !scopedStorage))) {
                             //请在清单文件 Application 节点中注册 android:requestLegacyExternalStorage="true" 属性
                             //否则就算申请了权限，也无法在 Android 10 的设备上正常读写外部存储上的文件
-                            //如果你的项目已经全面适配了分区存储，请调用 XXPermissions.setScopedStorage(true) 来跳过该检查
+                            //如果你的项目已经全面适配了分区存储，请调用 Qojqva.setScopedStorage(true) 来跳过该检查
                             "Please register the android:requestLegacyExternalStorage=\"true\" attribute in the manifest file"
                         }
 

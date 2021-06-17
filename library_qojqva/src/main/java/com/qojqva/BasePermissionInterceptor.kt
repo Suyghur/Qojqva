@@ -1,16 +1,14 @@
-package com.suyghur.qojqva
+package com.qojqva
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Build
+import android.support.v4.app.FragmentActivity
 import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
-import com.suyghur.qojqva.entity.Permission
-import com.suyghur.qojqva.impl.QojqvaFragment
-import com.suyghur.qojqva.impl.QojqvaProxyActivity
-import com.suyghur.qojqva.internal.IPermissionCallback
-import com.suyghur.qojqva.internal.IPermissionInterceptor
-import com.suyghur.qojqva.toolkit.LogKit
+import com.qojqva.entity.Permission
+import com.qojqva.impl.QojqvaFragment
+import com.qojqva.impl.QojqvaProxyActivity
+import com.qojqva.internal.IPermissionCallback
+import com.qojqva.internal.IPermissionInterceptor
 
 /**
  * @author #Suyghur.

@@ -1,4 +1,4 @@
-package com.suyghur.qojqva.exception
+package com.qojqva.exception
 
 /**
  * @author #Suyghur.

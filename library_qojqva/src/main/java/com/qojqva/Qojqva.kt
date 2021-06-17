@@ -1,14 +1,14 @@
-package com.suyghur.qojqva
+package com.qojqva
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.fragment.app.Fragment
-import com.suyghur.qojqva.impl.QojqvaProxyActivity
-import com.suyghur.qojqva.impl.PermissionSettingPage
-import com.suyghur.qojqva.internal.IPermissionCallback
-import com.suyghur.qojqva.internal.IPermissionInterceptor
-import com.suyghur.qojqva.toolkit.PermissionKit
+import android.support.v4.app.Fragment
+import com.qojqva.impl.QojqvaProxyActivity
+import com.qojqva.impl.PermissionSettingPage
+import com.qojqva.internal.IPermissionCallback
+import com.qojqva.internal.IPermissionInterceptor
+import com.qojqva.toolkit.PermissionKit
 
 /**
  * @author #Suyghur.
@@ -176,8 +176,7 @@ class Qojqva private constructor() {
 
         @JvmStatic
         fun startPermissionActivity(fragment: Fragment, permissions: ArrayList<String>) {
-            val activity = fragment.requireActivity()
-            fragment.startActivityForResult(PermissionSettingPage.getSmartPermissionIntent(activity, permissions), REQUEST_CODE)
+            fragment.startActivityForResult(PermissionSettingPage.getSmartPermissionIntent(fragment.activity, permissions), REQUEST_CODE)
         }
 
         @JvmStatic

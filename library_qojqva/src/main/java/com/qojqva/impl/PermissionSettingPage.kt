@@ -1,12 +1,12 @@
-package com.suyghur.qojqva.impl
+package com.qojqva.impl
 
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
-import com.suyghur.qojqva.entity.Permission
-import com.suyghur.qojqva.toolkit.PermissionKit
+import com.qojqva.entity.Permission
+import com.qojqva.toolkit.PermissionKit
 
 /**
  * @author #Suyghur.

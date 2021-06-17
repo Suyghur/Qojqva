@@ -1,23 +1,23 @@
-package com.suyghur.qojqva.impl
+package com.qojqva.impl
 
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.widget.FrameLayout
-import androidx.appcompat.app.AppCompatActivity
-import com.suyghur.qojqva.Qojqva
-import com.suyghur.qojqva.internal.IPermissionCallback
-import com.suyghur.qojqva.toolkit.LogKit
-import com.suyghur.qojqva.toolkit.PermissionChecker
-import com.suyghur.qojqva.toolkit.PermissionKit
+import com.qojqva.Qojqva
+import com.qojqva.internal.IPermissionCallback
+import com.qojqva.toolkit.LogKit
+import com.qojqva.toolkit.PermissionChecker
+import com.qojqva.toolkit.PermissionKit
 
 
 /**
  * @author #Suyghur.
  * Created on 3/29/2021
  */
-class QojqvaProxyActivity : AppCompatActivity() {
+class QojqvaProxyActivity : FragmentActivity() {
 
     private lateinit var layout: FrameLayout
 
@@ -25,7 +25,9 @@ class QojqvaProxyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         layout = FrameLayout(this)
         setContentView(layout)
+//        window.decorView.setBackgroundColor(Color.TRANSPARENT)
         doRequestPermissions()
+        LogKit.d("${QojqvaProxyActivity::class.java.simpleName}.onCreate")
     }
 
 
@@ -36,16 +38,13 @@ class QojqvaProxyActivity : AppCompatActivity() {
         mCallback = null
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         //原来这个finish是在BasePermissionInterceptor中用户点击"前往授权后调用"
         //跳转设置页面后如果（用户按下Home -> 再返回回到设置页 -> 按下返回键），这个流程中外部Activity（不是ProxyActivity）会回调onDestroy
         //所以这里要根据requestCode进行判断然后finish调ProxyActivity
         if (requestCode == Qojqva.REQUEST_CODE && !isFinishing) {
+            mCallback?.onProxyFinish()
             finish()
         }
     }
