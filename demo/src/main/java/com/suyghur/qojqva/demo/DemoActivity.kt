@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import com.qojqva.Qojqva
 import com.qojqva.entity.Permission
-import com.qojqva.internal.IPermissionCallback
 import com.qojqva.toolkit.LogKit
 
 /**
