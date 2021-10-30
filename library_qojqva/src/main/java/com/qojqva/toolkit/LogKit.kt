@@ -1,4 +1,4 @@
-package com.suyghur.qojqva.toolkit
+package com.qojqva.toolkit
 
 import android.util.Log
 import java.lang.reflect.Array
